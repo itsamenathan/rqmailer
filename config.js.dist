@@ -1,0 +1,12 @@
+module.exports = {
+  server : {
+    port  : "9003"
+  },
+
+  email : {
+    host : "hostname",
+    port : "587",
+    user : "user@host.com",
+    pass : "secret"
+  }
+};

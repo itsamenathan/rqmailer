@@ -6,6 +6,7 @@ function Server(){
   server.use(restify.acceptParser(server.acceptable));
   server.use(restify.bodyParser());
 
+
   server.listen(config.server.port, '');
   return server;
 }
