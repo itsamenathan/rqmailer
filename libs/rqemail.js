@@ -4,10 +4,9 @@ var email  = require('./email.js');
 server.post('/', request);
 
 function request(req, res, next){
-  //console.log(req.headers);
   var params = req.params;
 
-  if (!checkData(params)){
+  if (!valData(params)){
     res.send(404);
     return next();
   }
@@ -16,7 +15,7 @@ function request(req, res, next){
   return next();
 }
 
-function checkData(params){
+function valData(params){
   if (typeof params.data.subject == 'undefined' ) return false;
   if (typeof params.data.body == 'undefined' ) return false;
   return true;
