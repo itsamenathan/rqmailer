@@ -15,8 +15,8 @@ function Email(){
 
 Email.prototype.send = function(to, subject, body){
   this.transport.sendMail({
-    from: 'Redqueen <redqueen@frcv.net>',
-    to: to,
+    from: config.email.from,
+    to: config.email.to[to],
     subject: subject,
     text: body
   });

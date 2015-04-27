@@ -8,5 +8,10 @@ module.exports = {
     port : "587",
     user : "user@host.com",
     pass : "secret"
+    from : "Name <user@host.com>",
+    to : {
+      test_group : "test_group@host.com",
+    }
+
   }
 };
