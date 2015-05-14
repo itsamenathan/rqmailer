@@ -1,13 +1,12 @@
 var sys = require("sys");
 var stdin = process.openStdin();
 var amqp = require('amqp');
-var config = require( './configuration.js' );
+var config = require( './config.js' );
 
 var rabbit = amqp.createConnection(config.rabbit);
 
 stdin.addListener("data", function(d) {
     msg = d.toString().substring(0, d.length-1);
-    console.log("console: "+msg);
     publishMessage(msg);
 });
 
