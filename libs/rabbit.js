@@ -1,10 +1,21 @@
-var rabbit = require("wascally");
+var amqp = require('amqp');
 var config  = GLOBAL.config;
 
 function Rabbit(){
-  rabbit.configure(config.rabbit).done(function() {
-      console.log("done!");
-    });
+  var rabbit = amqp.createConnection(config.rabbit);
+  rabbit.on('ready', function () {
+    console.log("ready");
+    rabbit.queue('afasdfadafaf', function (queue) {
+      console.log('Queue ' + queue.name + ' is open');
+      queue.bind('redqueen', 'rqmailer');
+      queue.subscribe(function (message, headers, deliveryInfo, messageObject) {
+        console.log('Got a message with routing key ' + deliveryInfo.routingKey);
+        console.log(message.data.toString('utf8'));
+      });
+});
+
+
+  });
   return rabbit;
 }
 
