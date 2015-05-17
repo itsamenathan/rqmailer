@@ -1,7 +1,15 @@
 var config  = GLOBAL.config;
 var email  = require('./email.js');
-var rabbit  = require('./rabbit.js');
+var couch  = require('./couch.js');
 
+var feed = couch.changes();
+feed.since = 'now';
+feed.on('change', function (change) {
+  console.log(change);
+  couch.get(change.id, function (err, doc) {
+    console.log(doc);
+  });
+});
 
 //rabbit.handle("test.message", function( msg ) {
 //  console.log("wabbit: "+msg.body);

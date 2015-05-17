@@ -1,9 +1,9 @@
 var sys = require("sys");
 var stdin = process.openStdin();
-var amqp = require('amqp');
 var config = require( './config.js' );
+var cradle = require('cradle');
 
-var rabbit = amqp.createConnection(config.rabbit);
+var couch = new(cradle.Connection)(config.couch.url, config.couch.port).database(config.couch.db);
 
 stdin.addListener("data", function(d) {
     msg = d.toString().substring(0, d.length-1);
@@ -12,10 +12,9 @@ stdin.addListener("data", function(d) {
 
 
 function publishMessage(message){
-  rabbit.exchange('redqueen', {}, function (exchange){
-    exchange.publish('rqmailer', message, {}, function(d){
-      console.log("publish error: "+d);
-    });
+  couch.save({stdin: message},function (err, res) {
+    console.log("error: "+err);
+    console.log("res: "+res);
   });
 }
 
