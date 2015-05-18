@@ -3,7 +3,9 @@ var stdin = process.openStdin();
 var config = require( './config.js' );
 var cradle = require('cradle');
 
-var couch = new(cradle.Connection)(config.couch.url, config.couch.port).database(config.couch.db);
+var couch = new(cradle.Connection)(config.couch.url, config.couch.port,{
+  auth: { username: 'redqueen', password: 'bananahammock' }
+  }).database(config.couch.db);
 
 stdin.addListener("data", function(d) {
     msg = d.toString().substring(0, d.length-1);

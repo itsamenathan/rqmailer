@@ -6,7 +6,9 @@ module.exports = {
   couch : {
     url: 'http://localhost',
     port: 5984,
-    db: 'albums'
+    db: 'albums',
+    user: '',
+    pass: ''
   },
 
   email : {
