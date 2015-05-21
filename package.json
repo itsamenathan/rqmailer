@@ -4,8 +4,8 @@
   "description": "RedQueen email module",
   "main": "index.js",
   "dependencies": {
-    "cradle": "^0.6.9",
     "minimist": "^1.1.1",
+    "nano": "^6.1.2",
     "nodemailer": "^1.3.4",
     "nodemailer-smtp-transport": "^1.0.2"
   },

@@ -1,9 +1,12 @@
-var cradle = require('cradle');
-
 var config  = GLOBAL.config;
 
 function Couch(){
-  var db = new(cradle.Connection)(config.couch.url, config.couch.port).database(config.couch.db);
+  var couch = require('nano')(
+      {
+        "url"      : config.couch.url,
+        "parseUrl" : false
+      });
+  var db = couch.db.use('rqmailer');
   return db;
 }
 

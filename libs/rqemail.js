@@ -1,29 +1,29 @@
 var config  = GLOBAL.config;
 var email  = require('./email.js');
-var couch  = require('./couch.js');
+var db  = require('./couch.js');
 
-var feed = couch.changes();
-feed.since = 'now';
+// follow db changes starting from now
+var feed = db.follow({ since: 'now' });
 feed.on('change', function (change) {
-  console.log(change);
-  couch.get(change.id, function (err, doc) {
+  // received doc change, now get doc
+  db.get(change.id, function (err, doc) {
     console.log(doc);
+    var isValid = validateData(doc);
+    if ( isValid === true ) {
+      email.send(doc.data.to, doc.data.subject, doc.data.body);
+    }
+    else {
+      console.log(isValid);
+    }
   });
 });
 
-//rabbit.handle("test.message", function( msg ) {
-//  console.log("wabbit: "+msg.body);
-//  if (!valData(params)){
-//    res.send(404);
-//    return next();
-//  }
-//  //email.send(params.data.to, params.data.subject, params.data.body);
-//  msg.ack();
-//});
+feed.follow();
 
-function valData(params){
-  if (typeof config.email.to[params.data.to] == 'undefined' ) return false;
-  if (typeof params.data.subject == 'undefined' ) return false;
-  if (typeof params.data.body == 'undefined' ) return false;
+function validateData(doc){
+  if ( doc.sender == config.rq.sender ) return 'Sender is me';
+  if (typeof config.email.to[doc.data.to] == 'undefined' ) return 'To not valid';
+  if (typeof doc.data.subject == 'undefined' ) return 'Subject not valid';
+  if (typeof doc.data.body == 'undefined' ) return 'Body not valid';
   return true;
 }
