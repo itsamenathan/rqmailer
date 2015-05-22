@@ -1,19 +1,21 @@
 var config  = GLOBAL.config;
-var email  = require('./email.js');
-var db  = require('./couch.js');
+var log     = require('logule').init(module, 'rqmailer');
+var email   = require('./email.js');
+var db      = require('./couch.js');
 
 // follow db changes starting from now
 var feed = db.follow({ since: 'now' });
 feed.on('change', function (change) {
   // received doc change, now get doc
   db.get(change.id, function (err, doc) {
-    console.log(doc);
+    log.info("doc id: %s", doc._id);
     var isValid = validateData(doc);
     if ( isValid === true ) {
+      log.info("Sending email - [to: %s]",doc.data.to);
       email.send(doc.data.to, doc.data.subject, doc.data.body);
     }
     else {
-      console.log(isValid);
+      log.error("%s",isValid);
     }
   });
 });

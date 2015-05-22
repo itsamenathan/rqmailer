@@ -1,4 +1,5 @@
 var config        = GLOBAL.config;
+var log           = require('logule').init(module, 'email');
 var nodemailer    = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
