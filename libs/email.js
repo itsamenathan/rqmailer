@@ -20,7 +20,13 @@ Email.prototype.send = function(to, subject, body){
     to: config.email.to[to],
     subject: subject,
     text: body
-  });
+  },function(error, response){
+    if ( error ){
+      log.error(error);
+    }
+    else{
+      log.info("Message sent: %s",response.response);
+    }});
 };
 
 module.exports = (function() {
