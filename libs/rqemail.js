@@ -20,6 +20,10 @@ feed.on('change', function (change) {
   });
 });
 
+feed.on('error', function(er) {
+  log.error(er);
+});
+
 feed.follow();
 
 function validateData(doc){

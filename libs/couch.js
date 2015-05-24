@@ -2,8 +2,7 @@ var config  = GLOBAL.config;
 var log     = require('logule').init(module, 'couch');
 
 function Couch(){
-  var couch = require('nano')(
-      {
+  var couch = require('nano')({
         "url"      : config.couch.url,
         "parseUrl" : false
       });
