@@ -30,6 +30,8 @@ function validateData(doc){
   if ( doc.sender == config.rq.sender ) return 'Sender is me';
   if (typeof config.email.to[doc.data.to] == 'undefined' ) return 'To not valid';
   if (typeof doc.data.subject == 'undefined' ) return 'Subject not valid';
+  if ( ! doc.data.subject ) return 'Subject not valid';
   if (typeof doc.data.body == 'undefined' ) return 'Body not valid';
+  if ( ! doc.data.body ) return 'Body not valid';
   return true;
 }
