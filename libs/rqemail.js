@@ -9,13 +9,13 @@ feed.on('change', function (change) {
   // received doc change, now get doc
   db.get(change.id, function (err, doc) {
     log.info("doc id: %s", doc._id);
-    var isValid = validateData(doc);
-    if ( isValid === true ) {
+    try {
+      validateData(doc);
       log.info("Sending email - [to: %s]",doc.data.to);
       email.send(doc.data.to, doc.data.subject, doc.data.body);
     }
-    else {
-      log.error("%s",isValid);
+    catch (error) {
+      log.error("%s",error);
     }
   });
 });
@@ -27,11 +27,11 @@ feed.on('error', function(er) {
 feed.follow();
 
 function validateData(doc){
-  if ( doc.sender == config.rq.sender ) return 'Sender is me';
-  if (typeof config.email.to[doc.data.to] == 'undefined' ) return 'To not valid';
-  if (typeof doc.data.subject == 'undefined' ) return 'Subject not valid';
-  if ( ! doc.data.subject ) return 'Subject not valid';
-  if (typeof doc.data.body == 'undefined' ) return 'Body not valid';
-  if ( ! doc.data.body ) return 'Body not valid';
+  if ( doc.sender == config.rq.sender ) throw 'Sender is me';
+  if (typeof config.email.to[doc.data.to] == 'undefined' ) throw 'To not valid';
+  if (typeof doc.data.subject == 'undefined' ) throw 'Subject not valid';
+  if ( ! doc.data.subject ) throw 'Subject not valid';
+  if (typeof doc.data.body == 'undefined' ) throw 'Body not valid';
+  if ( ! doc.data.body ) throw 'Body not valid';
   return true;
 }

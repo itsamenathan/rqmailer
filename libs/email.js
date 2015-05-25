@@ -22,7 +22,7 @@ Email.prototype.send = function(to, subject, body){
     text: body
   },function(error, response){
     if ( error ){
-      log.error(error);
+      log.error("%s",error);
     }
     else{
       log.info("Message sent: %s",response.response);
