@@ -27,11 +27,23 @@ feed.on('error', function(er) {
 feed.follow();
 
 function validateData(doc){
+  // Check if sender of message is also receaver
   if ( doc.sender == config.rq.sender ) throw 'Sender is me';
-  if (typeof config.email.to[doc.data.to] == 'undefined' ) throw 'To not valid';
+
+  // Chck the whitelist
+  if (config.email.to.indexOf(doc.data.to) == -1) throw "Email not in whitelist";
+
+  // Check that subject is defined
   if (typeof doc.data.subject == 'undefined' ) throw 'Subject not valid';
+
+  // Check if subject contains something
   if ( ! doc.data.subject ) throw 'Subject not valid';
+
+  // Check if Body is defined
   if (typeof doc.data.body == 'undefined' ) throw 'Body not valid';
+
+  // Check if Body contains something
   if ( ! doc.data.body ) throw 'Body not valid';
+
   return true;
 }

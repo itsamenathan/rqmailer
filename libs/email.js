@@ -17,7 +17,7 @@ function Email(){
 Email.prototype.send = function(to, subject, body){
   this.transport.sendMail({
     from: config.email.from,
-    to: config.email.to[to],
+    to: to,
     subject: subject,
     text: body
   },function(error, response){
