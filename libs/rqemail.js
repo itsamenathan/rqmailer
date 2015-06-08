@@ -28,7 +28,12 @@ function validateData(doc){
   return true;
 }
 // follow db changes starting from now
-var feed = db.follow({ since: 'now' });
+var feed = db.follow({
+    since        : 'now',
+    filter       : 'project/by_name',
+    query_params : {name : 'rqmailer'}
+});
+
 feed.on('change', function (change) {
   // received doc change, now get doc
   db.get(change.id, function (err, doc) {
