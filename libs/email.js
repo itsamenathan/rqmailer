@@ -1,22 +1,24 @@
-var config        = GLOBAL.config;
 var log           = require('logule').init(module, 'email');
 var nodemailer    = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
-function Email(){
+// return constructor
+module.exports = Email;
+
+function Email(cfg){
   this.transport = nodemailer.createTransport(smtpTransport({
-                     host: config.email.host,
-                     port: config.email.port,
+                     host: cfg.host,
+                     port: cfg.port,
                        auth: {
-                         user: config.email.user,
-                         pass: config.email.pass
+                         user: cfg.user,
+                         pass: cfg.pass
                        }
                    }));
 }
 
-Email.prototype.send = function(to, subject, body){
+Email.prototype.send = function(from, to, subject, body){
   this.transport.sendMail({
-    from: config.email.from,
+    from: from,
     to: to,
     subject: subject,
     text: body
@@ -28,11 +30,3 @@ Email.prototype.send = function(to, subject, body){
       log.info("Message sent: %s",response.response);
     }});
 };
-
-module.exports = (function() {
-  var instance;
-  if (typeof instance === 'undefined') {
-    instance = new Email();
-  }
-  return instance;
-}());

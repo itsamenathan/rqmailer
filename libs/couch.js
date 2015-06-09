@@ -1,19 +1,20 @@
-var config  = GLOBAL.config;
-var log     = require('logule').init(module, 'couch');
+var nano = require('nano');
+var log = require('logule').init(module, 'couch');
 
-function Couch(){
-  var couch = require('nano')({
-        "url"      : config.couch.url,
-        "parseUrl" : false
-      });
-  var db = couch.db.use('rqmailer');
-  return db;
+// return constructor
+module.exports = Couch;
+
+function Couch(cfg) {
+  var couch = nano({
+    'url'      : cfg.url,
+    'parseUrl' : false
+  });
+
+  this.db    = couch.db.use(cfg.db);
+
+  this.feed  = this.db.follow({
+    since        : 'now',
+    filter       : 'project/by_name',
+    query_params : {name : cfg.filter}
+  });
 }
-
-module.exports = (function() {
-  var instance;
-  if (typeof instance === 'undefined') {
-    instance = new Couch();
-  }
-  return instance;
-}());

@@ -1,7 +1,13 @@
 var config  = GLOBAL.config;
 var log     = require('logule').init(module, 'rqmailer');
-var email   = require('./email.js');
-var db      = require('./couch.js');
+
+var Email   = require('./email.js');
+var email   = new Email(config.couch);
+
+// Setup our couchdb connection
+var Couch   = require('./couch.js');
+var couch   = new Couch(config.email);
+
 
 function validateData(doc){
   // Check if sender of message is also receaver
@@ -27,22 +33,17 @@ function validateData(doc){
 
   return true;
 }
-// follow db changes starting from now
-var feed = db.follow({
-    since        : 'now',
-    filter       : 'project/by_name',
-    query_params : {name : 'rqmailer'}
-});
 
-feed.on('change', function (change) {
+couch.feed.on('change', function (change) {
   // received doc change, now get doc
-  db.get(change.id, function (err, doc) {
+  couch.db.get(change.id, function (err, doc) {
     if ( err ) { log.err("%j", err); return; }
     log.info("doc id: %s", doc._id);
     try {
       validateData(doc);
       log.info("Sending email - [to: %s]",doc.data.to);
-      email.send(doc.data.to, doc.data.subject, doc.data.body);
+      // TODO: From is should be fixed
+      email.send('redqueen@frcv.net', doc.data.to, doc.data.subject, doc.data.body);
     }
     catch (error) {
       log.error("%s",error);
@@ -50,8 +51,8 @@ feed.on('change', function (change) {
   });
 });
 
-feed.on('error', function(er) {
+couch.feed.on('error', function(er) {
   log.error(er);
 });
 
-feed.follow();
+couch.feed.follow();
