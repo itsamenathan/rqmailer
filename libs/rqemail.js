@@ -35,20 +35,19 @@ function validateData(doc){
 }
 
 couch.feed.on('change', function (change) {
-  // received doc change, now get doc
-  couch.db.get(change.id, function (err, doc) {
-    if ( err ) { log.err("%j", err); return; }
-    log.info("doc id: %s", doc._id);
-    try {
-      validateData(doc);
-      log.info("Sending email - [to: %s]",doc.data.to);
-      // TODO: From is should be fixed
-      email.send('redqueen@frcv.net', doc.data.to, doc.data.subject, doc.data.body);
-    }
-    catch (error) {
-      log.error("%s",error);
-    }
-  });
+  var doc = change.doc;
+  log.info("change: %j", change);
+
+  try {
+    validateData(doc);
+    log.info("Sending email - [to: %s]",doc.data.to);
+    // TODO: From is should be fixed
+    email.send('redqueen@frcv.net', doc.data.to, doc.data.subject, doc.data.body);
+  }
+  catch (error) {
+    log.error("%s",error);
+  }
+
 });
 
 couch.feed.on('error', function(er) {

@@ -14,6 +14,7 @@ function Couch(cfg) {
 
   this.feed  = this.db.follow({
     since        : 'now',
+    include_docs : true,
     filter       : 'project/by_name',
     query_params : {name : cfg.filter}
   });
