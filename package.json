@@ -4,6 +4,7 @@
   "description": "RedQueen email module",
   "main": "index.js",
   "dependencies": {
+    "config": "^1.14.0",
     "logule": "^2.0.1",
     "minimist": "^1.1.1",
     "nano": "^6.1.2",
