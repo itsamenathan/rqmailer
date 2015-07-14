@@ -1,0 +1,27 @@
+{
+  "rq" : {
+    "sender" : "rqmailer"
+  },
+
+  "couch" : {
+    "url": "http://localhost",
+    "port": 5984,
+    "db": "albums",
+    "user": "",
+    "pass": ""
+  },
+
+  "email" : {
+    "host" : "hostname",
+    "port" : "587",
+    "user" : "user@host.com",
+    "pass" : "secret",
+    "from" : "Name <user@host.com>",
+    "to" : [
+           "board@frcv.net",
+           "general@frcv.net",
+           "makers@frcv.net",
+           "members@frcv.net"
+         ]
+  }
+}
