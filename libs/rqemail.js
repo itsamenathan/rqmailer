@@ -1,4 +1,4 @@
-var config  = GLOBAL.config;
+var config  = require('config');
 var log     = require('logule').init(module, 'rqmailer');
 
 var Email   = require('./email.js');
