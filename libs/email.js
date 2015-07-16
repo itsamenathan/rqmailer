@@ -2,9 +2,6 @@ var log           = require('logule').init(module, 'email');
 var nodemailer    = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
-// return constructor
-module.exports = Email;
-
 function Email(cfg){
   this.transport = nodemailer.createTransport(smtpTransport({
                      host: cfg.host,
@@ -30,3 +27,8 @@ Email.prototype.send = function(from, to, subject, body){
       log.info("Message sent: %s",response.response);
     }});
 };
+
+// return constructor
+module.exports = Email;
+
+
